@@ -1,3 +1,6 @@
 runtime: python
 env: flex
 etrypoint: gunicorn -b :$PORT main:app
+
+includes:
+- env_vars.yaml
