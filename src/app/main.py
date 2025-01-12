@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import pickle
 
@@ -8,13 +9,13 @@ from flask import request
 from googletrans import Translator
 from textblob import TextBlob
 
-model = pickle.load(open('modelo.sav', 'rb'))
+model = pickle.load(open('models/modelo.sav', 'rb'))
 colunas = ['tamanho', 'ano', 'garagem']
 
 
 app = Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = 'paulo'
-app.config['BASIC_AUTH_PASSWORD'] = 'alura'
+app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_AUTH_USERNAME')
+app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_AUTH_PASSWORD')
 
 basic_auth = BasicAuth(app)
 
@@ -40,4 +41,4 @@ def cotacao():
     preco = model.predict([dados_input])
     return jsonify(preco=preco[0])
 
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0')
